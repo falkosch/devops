@@ -16,7 +16,7 @@
 # **** name: choose the Git tool, e.g. "(Git) git"
 # **** home: "/usr/bin/git"
 
-FROM jenkins/slave:3.36-1
+FROM jenkins/slave:latest-jdk11
 
 USER root
 
