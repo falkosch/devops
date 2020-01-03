@@ -1,7 +1,27 @@
-FROM jenkins/slave:latest-jdk11
+# Provides an image with docker CLI installed that connects to the host docker
+# engine to spawn container via e.g. a build node of the CI
 
-# see https://docs.docker.com/install/linux/docker-ce/ubuntu/
+# Configuration required in jenkins:
+# * Add a new "static agent" via "Manage Jenkins" / "Manage Nodes" and set the following options:
+# ** name: something informal, e.g. "jenkins-slave"
+# ** # of executors: <count of CPU cores assigned for a container>
+# ** remote directory: "/home/jenkins/agent"
+# ** labels: according to the system specs of the container, e.g. "docker linux"
+# ** usage: "Only build jobs with label expressions matching this node"
+# ** launch method: "Launch agent via execution of command on the master"
+# *** launch command: "docker run -i --rm -v /var/run/docker.sock:/var/run/docker.sock --name jenkins-slave -u root jenkins-slave:latest"
+# ** availability: "Bring this agent online when in demand, and take offline when idle"
+# ** tool locations: checked
+# *** list of tool locations: for windows host and linux container add an entry for the "Git" tool
+# **** name: choose the Git tool, e.g. "(Git) git"
+# **** home: "/usr/bin/git"
+
+FROM jenkins/slave:3.36-1
+
 USER root
+
+# Add docker CLI to the image and configure user access permissions.
+# See https://docs.docker.com/install/linux/docker-ce/ubuntu/
 RUN apt-get update \
   && apt-get install -y --no-install-recommends apt-transport-https ca-certificates curl gnupg2 software-properties-common \
   && curl -fsSL https://download.docker.com/linux/debian/gpg > ./gpg.key \
@@ -12,9 +32,22 @@ RUN apt-get update \
   && apt-get install -y docker-ce docker-ce-cli containerd.io \
   && rm -rf /var/lib/apt/lists/* \
   && usermod -aG docker jenkins \
-  && newgrp docker \
-  && sudo docker run hello-world
+  && newgrp docker
 
-USER jenkins
-VOLUME ["/var/run/docker.sock"]
-RUN docker -v && docker run --rm hello-world
+# Setup an init script that
+# fixes permissions on "/var/run/docker.sock" volume and
+# starts the jenkins-slave agent
+# when image is started with "docker run".
+RUN { \
+      echo "#!/usr/bin/env bash"; \
+      echo "set -e"; \
+      echo "chown 666 /var/run/docker.sock"; \
+      echo "su jenkins -c '/usr/local/openjdk-11/bin/java -jar /usr/share/jenkins/agent.jar'"; \
+    } > /root/init.sh \
+    && chmod +x /root/init.sh
+
+# Mount docker.sock so that the contained docker CLI can talk to the host's docker engine
+VOLUME /var/run/docker.sock
+
+# Run the init script when the image is started
+ENTRYPOINT exec /root/init.sh
