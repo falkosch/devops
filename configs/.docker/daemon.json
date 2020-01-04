@@ -1,0 +1,8 @@
+{
+  "registry-mirrors": [],
+  "insecure-registries": [],
+  "debug": true,
+  "experimental": false,
+  "max-concurrent-downloads": 1,
+  "max-concurrent-uploads": 1
+}
