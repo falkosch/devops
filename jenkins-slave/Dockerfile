@@ -32,14 +32,20 @@ RUN apt-get update \
   && apt-get install -y docker-ce docker-ce-cli containerd.io \
   && rm -rf /var/lib/apt/lists/*
 
-# Make docker.sock available for CLI connection to host and
-# fix access permissions
+# Put jenkins in the docker group so that it can access /var/run/docker.sock
 RUN usermod -aG docker jenkins \
-  && newgrp docker \
-  && touch /var/run/docker.sock \
-  && chown root:docker /var/run/docker.sock \
-  && chmod 666 /var/run/docker.sock
+  && newgrp docker
 
-USER jenkins
+# Setup an init script that
+# fixes group ownership on "/var/run/docker.sock" volume and
+# starts the jenkins-slave agent
+# when image is started with "docker run".
+RUN { \
+      echo "#!/usr/bin/env bash"; \
+      echo "chown root:docker /var/run/docker.sock"; \
+      echo "su jenkins -c '/usr/local/openjdk-11/bin/java -jar /usr/share/jenkins/agent.jar'"; \
+    } >> /root/init.sh \
+    && chmod +x /root/init.sh
 
-CMD ["/usr/local/openjdk-11/bin/java", "-jar", "/usr/share/jenkins/agent.jar"]
+# Run the init script when the image is started
+ENTRYPOINT exec /root/init.sh
