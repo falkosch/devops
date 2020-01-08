@@ -1,5 +1,9 @@
 FROM gcc:9.2.0
 
+LABEL maintainer="falko.schwabe@googlemail.com"
+LABEL version="1.0.0"
+LABEL description="Adds the sonar build wrapper for cpp to gcc-9.2.0 as base image for analyzing C/C++ projects."
+
 ENV BUILD_WRAPPER_PACKAGE="build-wrapper-linux-x86"
 ENV BUILD_WRAPPER_ZIP="${BUILD_WRAPPER_PACKAGE}.zip"
 ENV BUILD_WRAPPER="build-wrapper-linux-x86-64"

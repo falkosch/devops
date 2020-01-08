@@ -1,5 +1,8 @@
-# Provides an image with docker CLI installed that connects to the host docker
-# engine to spawn container via e.g. a build node of the CI
+FROM jenkins/slave:latest-jdk11
+
+LABEL maintainer="falko.schwabe@googlemail.com"
+LABEL version="1.0.0"
+LABEL description="Provides an image with docker CLI installed that connects to the host docker engine to spawn container via e.g. a build node of the CI."
 
 # Configuration required in jenkins:
 # * Add a new "static agent" via "Manage Jenkins" / "Manage Nodes" and set the following options:
@@ -15,8 +18,6 @@
 # *** list of tool locations: for windows host and linux container add an entry for the "Git" tool
 # **** name: choose the Git tool, e.g. "(Git) git"
 # **** home: "/usr/bin/git"
-
-FROM jenkins/slave:latest-jdk11
 
 USER root
 
