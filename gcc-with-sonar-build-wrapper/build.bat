@@ -1,1 +1,1 @@
-docker build --rm --pull -t gcc-with-sonar-build-wrapper .
+docker build --pull -t gcc-with-sonar-build-wrapper .

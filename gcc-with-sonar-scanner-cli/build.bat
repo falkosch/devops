@@ -1,1 +1,1 @@
-docker build --rm --pull -t gcc-with-sonar-scanner-cli .
+docker build --pull -t gcc-with-sonar-scanner-cli .
