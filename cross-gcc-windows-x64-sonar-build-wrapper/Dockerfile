@@ -1,5 +1,7 @@
 FROM dockcross/windows-static-x64:20191223-c07e40f
 
+ENV DEFAULT_DOCKCROSS_IMAGE cross-gcc-windows-x64-sonar-scanner-cli
+
 LABEL maintainer="falko.schwabe@googlemail.com"
 LABEL version="1.0.0"
 LABEL description="Adds the sonar build wrapper for cpp to 'dockcross windows-x64 static' as base image for analyzing C/C++ projects."

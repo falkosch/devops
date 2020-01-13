@@ -1,1 +1,4 @@
-/workstation-setup-scripts/download
+/workstation-setup-scripts/download/*
+!/workstation-setup-scripts/download/.gitkeep
+/workstation-setup-scripts/repositories/*
+!/workstation-setup-scripts/repositories/.gitkeep
