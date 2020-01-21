@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-docker build --pull -t cross-gcc-windows-x64-sonar-build-wrapper .
+docker build -t cross-gcc-windows-x64-sonar-build-wrapper .

@@ -1,27 +1,10 @@
-FROM dockcross/windows-static-x64:20191223-c07e40f
-
-ENV DEFAULT_DOCKCROSS_IMAGE cross-gcc-windows-x64-sonar-scanner-cli
+FROM gcc-with-sonar-build-wrapper:latest
 
 LABEL maintainer="falko.schwabe@googlemail.com"
 LABEL version="1.0.0"
-LABEL description="Adds the sonar build wrapper for cpp to 'dockcross windows-x64 static' as base image for analyzing C/C++ projects."
+LABEL description="Provides a cross-compile environment for windows x64."
 
-ENV BUILD_WRAPPER_PACKAGE="build-wrapper-linux-x86"
-ENV BUILD_WRAPPER_ZIP="${BUILD_WRAPPER_PACKAGE}.zip"
-ENV BUILD_WRAPPER="build-wrapper-linux-x86-64"
+RUN apt-get update \
+  && apt-get install -y --no-install-recommends python3 python3-pip libglew-dev
 
-ENV SONAR_QUBE_URL="https://sonarcloud.io/static/cpp/${BUILD_WRAPPER_ZIP}"
-
-RUN cd /tmp \
-  && rm -rf ./* \
-  && wget -q ${SONAR_QUBE_URL} \
-  && unzip ${BUILD_WRAPPER_ZIP} \
-  && rm ${BUILD_WRAPPER_ZIP} \
-  && mv -t /usr/local *
-
-RUN cd /usr/local/${BUILD_WRAPPER_PACKAGE} \
-  && chmod +x ${BUILD_WRAPPER} \
-  && ln -sT libinterceptor-x86_64.so libinterceptor-haswell.so
-
-RUN cd /usr/local/bin \
-  && ln -sT /usr/local/${BUILD_WRAPPER_PACKAGE}/${BUILD_WRAPPER} ${BUILD_WRAPPER}
+RUN pip3 install cmake
