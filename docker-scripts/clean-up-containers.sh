@@ -6,5 +6,5 @@ then
     echo "Containers seem to be clean."
     docker ps -a
 else
-    docker rm $(LST)
+    docker rm ${LST}
 fi
