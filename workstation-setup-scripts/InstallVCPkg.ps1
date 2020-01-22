@@ -1,6 +1,6 @@
 Import-Module "$PSScriptRoot/InstallAppFromRepository.psm1"
 
-Install-AppFromRepository -RepositoryName "vcpkg" `
+$Path = Install-AppFromRepository -RepositoryName "vcpkg" `
     -GitURL "https://github.com/microsoft/vcpkg.git" `
     -BootstrapCmd "bootstrap-vcpkg.bat"
 
