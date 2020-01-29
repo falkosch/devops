@@ -5,6 +5,11 @@ LABEL version="1.0.0"
 LABEL description="Provides a cross-compile environment for windows x64."
 
 RUN apt-get update \
-  && apt-get install -y --no-install-recommends python3 python3-pip libglew-dev
+  && apt-get install -y --no-install-recommends python3 python3-pip python3-setuptools
 
-RUN pip3 install cmake
+RUN pip3 install cmake wheel
+
+RUN pip3 install conan
+
+RUN apt-get update \
+  && apt-get install -y --no-install-recommends libglew-dev
