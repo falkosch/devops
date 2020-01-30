@@ -9,7 +9,14 @@ RUN apt-get update \
 
 RUN pip3 install cmake wheel
 
-RUN pip3 install conan
+ENV CONAN_USER_HOME /conan
+
+RUN mkdir -p ${CONAN_USER_HOME}/.conan \
+  && chmod -R 777 ${CONAN_USER_HOME} \
+  && pip3 install conan \
+  && conan profile new default --detect
+#  && conan profile new default --detect \
+#  && conan profile update settings.compiler.libcxx=libstdc++11 default
 
 RUN apt-get update \
   && apt-get install -y --no-install-recommends libglew-dev
