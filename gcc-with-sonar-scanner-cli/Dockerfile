@@ -34,3 +34,4 @@ RUN wget -U "scannercli" -q -O /opt/sonar-scanner-cli.zip https://binaries.sonar
     && npm install -g typescript@3.6.3
 
 USER scanner-cli
+RUN mkdir -p ~/.sonar/cache

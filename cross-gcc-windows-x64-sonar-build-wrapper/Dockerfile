@@ -18,7 +18,13 @@ ENV CONAN_USER_HOME /conan
 RUN mkdir -p ${CONAN_USER_HOME}/.conan \
   && chmod -R 777 ${CONAN_USER_HOME} \
   && pip3 install conan \
-  && conan profile new default --detect
+  && conan profile new default --detect \
+  && conan remote add bincrafters https://api.bintray.com/conan/bincrafters/public-conan
 
 RUN apt-get update \
-  && apt-get install -y --no-install-recommends libglew-dev
+  && apt-get install -y --no-install-recommends \
+        libglew-dev \
+        mingw-w64 \
+        mingw-w64-common \
+        mingw-w64-tools \
+        mingw-w64-x86-64-dev
