@@ -1,11 +1,11 @@
 # Original: https://github.com/SonarSource/sonar-scanner-cli-docker
 # Original license: GNU Lesser General Public License v3.0
 
-FROM gcc:9.2.0
+FROM buildpack-deps:stable
 
 LABEL maintainer="falko.schwabe@googlemail.com"
 LABEL version="1.0.0"
-LABEL description="Adopts https://github.com/SonarSource/sonar-scanner-cli-docker/blob/master/4/Dockerfile by adding gcc-9.2.0 for analyzing C/C++ projects."
+LABEL description="Adopts https://github.com/SonarSource/sonar-scanner-cli-docker/blob/master/4/Dockerfile but uses buildpack-deps' stable version."
 
 ARG SONAR_SCANNER_HOME=/opt/sonar-scanner
 ARG NODEJS_HOME=/opt/nodejs
@@ -19,7 +19,7 @@ ENV SONAR_SCANNER_HOME=${SONAR_SCANNER_HOME} \
     NODE_PATH=${NODEJS_HOME}/lib/node_modules
 
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends ca-certificates git wget unzip xz-utils pylint \
+    && apt-get install -y --no-install-recommends ca-certificates git wget unzip tar xz-utils pylint \
     && rm -rf /var/lib/apt/lists/*
 
 RUN groupadd --gid ${GID} scanner-cli \
