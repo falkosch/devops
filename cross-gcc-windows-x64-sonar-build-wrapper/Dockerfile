@@ -11,7 +11,7 @@ RUN apt-get update \
         python3-setuptools \
         gcovr lcov
 
-RUN pip3 install cmake wheel
+RUN pip3 install cmake==3.13.3 wheel
 
 ENV CONAN_USER_HOME /conan
 
