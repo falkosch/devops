@@ -64,6 +64,15 @@ pipeline {
             }
           }
         }
+
+        stage('maven-extended-toolchain') {
+          steps {
+            dir('maven-extended-toolchain') {
+              sh 'chmod +x ./build.sh'
+              sh './build.sh'
+            }
+          }
+        }
       }
     }
   }

@@ -1,11 +1,11 @@
 # Original: https://github.com/SonarSource/sonar-scanner-cli-docker
 # Original license: GNU Lesser General Public License v3.0
 
-FROM buildpack-deps:stable
+FROM maven:3.6.3-jdk-13
 
 LABEL maintainer="falko.schwabe@googlemail.com"
 LABEL version="1.0.0"
-LABEL description="Adopts https://github.com/SonarSource/sonar-scanner-cli-docker/blob/master/4/Dockerfile but uses buildpack-deps' stable version."
+LABEL description="Provides an extended toolchain for maven builds."
 
 ARG SONAR_SCANNER_HOME=/opt/sonar-scanner
 ARG NODEJS_HOME=/opt/nodejs
@@ -18,9 +18,15 @@ ENV SONAR_SCANNER_HOME=${SONAR_SCANNER_HOME} \
     PATH=${SONAR_SCANNER_HOME}/bin:${NODEJS_HOME}/bin:${PATH} \
     NODE_PATH=${NODEJS_HOME}/lib/node_modules
 
-RUN apt-get update \
-    && apt-get install -y --no-install-recommends ca-certificates git wget unzip tar xz-utils pylint \
-    && rm -rf /var/lib/apt/lists/*
+RUN yum install -y \
+        ca-certificates \
+        git \
+        wget \
+        unzip \
+        tar \
+        xz-utils \
+        pylint \
+    && rm -rf /var/cache/yum
 
 RUN groupadd --gid ${GID} scanner-cli \
     && useradd --uid ${UID} --gid scanner-cli --shell /bin/bash --create-home scanner-cli
