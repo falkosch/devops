@@ -73,6 +73,15 @@ pipeline {
             }
           }
         }
+
+        stage('nodejs-extended-toolchain') {
+          steps {
+            dir('nodejs-extended-toolchain') {
+              sh 'chmod +x ./build.sh'
+              sh './build.sh'
+            }
+          }
+        }
       }
     }
   }
