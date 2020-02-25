@@ -65,9 +65,9 @@ pipeline {
           }
         }
 
-        stage('maven-extended-toolchain') {
+        stage('java-toolchain') {
           steps {
-            dir('maven-extended-toolchain') {
+            dir('java-toolchain') {
               sh 'chmod +x ./build.sh'
               sh './build.sh'
             }
