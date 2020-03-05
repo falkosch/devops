@@ -74,9 +74,9 @@ pipeline {
           }
         }
 
-        stage('nodejs-extended-toolchain') {
+        stage('nodejs-toolchain') {
           steps {
-            dir('nodejs-extended-toolchain') {
+            dir('nodejs-toolchain') {
               sh 'chmod +x ./build.sh'
               sh './build.sh'
             }
