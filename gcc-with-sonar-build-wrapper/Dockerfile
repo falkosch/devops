@@ -19,7 +19,7 @@ RUN cd /tmp \
 
 RUN cd /usr/local/${BUILD_WRAPPER_PACKAGE} \
   && chmod +x ${BUILD_WRAPPER} \
-  && ln -sT libinterceptor-x86_64.so libinterceptor-haswell.so
+  && ([ -e libinterceptor-haswell.so ] || ln -sT libinterceptor-x86_64.so libinterceptor-haswell.so)
 
 RUN cd /usr/local/bin \
   && ln -sT /usr/local/${BUILD_WRAPPER_PACKAGE}/${BUILD_WRAPPER} ${BUILD_WRAPPER}
