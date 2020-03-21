@@ -4,14 +4,16 @@ LABEL maintainer="falko.schwabe@googlemail.com"
 LABEL version="1.0.0"
 LABEL description="Provides an extended toolchain for maven builds."
 
+
+# Upgrade environment
 RUN yum update -y \
-    && yum install -y \
-        ca-certificates \
-        git \
-        wget \
-        unzip \
+    && yum clean all \
+    && rm -rf /var/cache/yum
+
+
+# Install prerequisites
+RUN yum install -y \
         tar \
-        xz-utils \
         pylint \
     && yum clean all \
     && rm -rf /var/cache/yum
