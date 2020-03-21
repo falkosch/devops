@@ -22,20 +22,31 @@ LABEL description="Provides an image with docker CLI installed that connects to 
 USER root
 
 # Add docker CLI to the image
-# See https://docs.docker.com/install/linux/docker-ce/ubuntu/
+# See https://docs.docker.com/install/linux/docker-ce/debian/
 RUN apt-get update \
-  && apt-get install -y --no-install-recommends apt-transport-https ca-certificates curl gnupg2 software-properties-common \
-  && curl -fsSL https://download.docker.com/linux/debian/gpg > ./gpg.key \
-  && apt-key add ./gpg.key \
-  && rm -f ./gpg.key \
-  && add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable" \
-  && apt-get update \
-  && apt-get install -y docker-ce docker-ce-cli containerd.io \
-  && rm -rf /var/lib/apt/lists/*
+    && apt-get upgrade -y --no-install-recommends \
+    && apt-get install -y --no-install-recommends \
+            apt-utils \
+            apt-transport-https \
+            ca-certificates \
+            curl \
+            gnupg2 \
+            software-properties-common \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+RUN curl -fsSL https://download.docker.com/linux/debian/gpg > ./gpg.key \
+    && apt-key add ./gpg.key \
+    && rm -f ./gpg.key \
+    && add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable" \
+    && apt-get update \
+    && apt-get install -y --no-install-recommends docker-ce docker-ce-cli containerd.io \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # Put jenkins in the docker group so that it can access /var/run/docker.sock
 RUN usermod -aG docker jenkins \
-  && newgrp docker
+    && newgrp docker
 
 # Setup an init script that
 # fixes group ownership on "/var/run/docker.sock" volume and
