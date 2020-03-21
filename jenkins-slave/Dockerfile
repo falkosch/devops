@@ -12,7 +12,7 @@ LABEL description="Provides an image with docker CLI installed that connects to 
 # ** labels: according to the system specs of the container, e.g. "docker linux"
 # ** usage: "Only build jobs with label expressions matching this node"
 # ** launch method: "Launch agent via execution of command on the master"
-# *** launch command: "docker run -i --rm -v /var/run/docker.sock:/var/run/docker.sock --name jenkins-slave jenkins-slave:latest"
+# *** launch command: "docker run -i --rm -v /var/run/docker.sock:/var/run/docker.sock --name jenkins-slave schwabe/jenkins-slave:latest"
 # ** availability: "Bring this agent online when in demand, and take offline when idle"
 # ** tool locations: checked
 # *** list of tool locations: for windows host and linux container add an entry for the "Git" tool
