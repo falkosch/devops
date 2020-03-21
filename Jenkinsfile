@@ -29,36 +29,9 @@ pipeline {
           }
         }
 
-        stage('gcc-with-sonar-build-wrapper') {
+        stage('gcc-toolchain') {
           steps {
-            dir('gcc-with-sonar-build-wrapper') {
-              sh 'chmod +x ./build.sh'
-              sh './build.sh'
-            }
-          }
-        }
-
-        stage('gcc-with-sonar-scanner-cli') {
-          steps {
-            dir('gcc-with-sonar-scanner-cli') {
-              sh 'chmod +x ./build.sh'
-              sh './build.sh'
-            }
-          }
-        }
-
-        stage('cross-gcc-windows-x64-sonar-build-wrapper') {
-          steps {
-            dir('cross-gcc-windows-x64-sonar-build-wrapper') {
-              sh 'chmod +x ./build.sh'
-              sh './build.sh'
-            }
-          }
-        }
-
-        stage('cross-gcc-windows-x64-sonar-scanner-cli') {
-          steps {
-            dir('cross-gcc-windows-x64-sonar-scanner-cli') {
+            dir('gcc-toolchain') {
               sh 'chmod +x ./build.sh'
               sh './build.sh'
             }
