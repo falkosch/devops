@@ -13,8 +13,10 @@ RUN yum update -y \
 
 # Install prerequisites
 RUN yum install -y \
-        tar \
-        pylint \
+        ca-certificates \
+        git \
+        unzip \
+        wget \
     && yum clean all \
     && rm -rf /var/cache/yum
 
