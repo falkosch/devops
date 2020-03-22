@@ -1,4 +1,4 @@
-FROM buildpack-deps:focal
+FROM buildpack-deps:buster
 
 LABEL maintainer="falko.schwabe@googlemail.com"
 LABEL version="1.0.0"
