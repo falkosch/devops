@@ -6,6 +6,7 @@ LABEL description="Provides an extended toolchain for GCC builds."
 
 
 # Upgrade environment
+ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update \
     && apt-get upgrade -y --no-install-recommends \
     && apt-get clean \
@@ -32,7 +33,6 @@ RUN apt-get update \
             mingw-w64 \
             mingw-w64-common \
             mingw-w64-tools \
-            mingw-w64-i686-dev \
             mingw-w64-x86-64-dev \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
@@ -47,11 +47,9 @@ RUN apt-get update \
 
 
 # Install cmake
-RUN mkdir -p /tmp/pip \
-    && pip3 install --cache-dir=/tmp/pip \
+RUN pip3 install --no-cache-dir \
             cmake==3.13.2.post1 \
             wheel \
-    && rm -rf /tmp/* \
     && cmake --version
 
 
@@ -61,10 +59,8 @@ ARG CONAN_USER_HOME=/opt/conan
 ENV CONAN_USER_HOME=${CONAN_USER_HOME}
 
 RUN mkdir -p ${CONAN_USER_HOME}/.conan \
-    && mkdir -p /tmp/pip \
-    && pip3 install --cache-dir=/tmp/pip \
+    && pip3 install --no-cache-dir \
             conan \
-    && rm -rf /tmp/* \
     && conan profile new default --detect \
     && conan remote add bincrafters https://api.bintray.com/conan/bincrafters/public-conan \
     && chmod -R 777 ${CONAN_USER_HOME} \
@@ -111,8 +107,8 @@ RUN wget -q -O ${SONAR_BUILD_WRAPPER_ZIP} ${SONAR_BUILD_WRAPPER_DOWNLOAD} \
         [ -e ${SONAR_BUILD_WRAPPER_HOME}/libinterceptor-haswell.so ] \
         || ln -sT ${SONAR_BUILD_WRAPPER_HOME}/libinterceptor-x86_64.so ${SONAR_BUILD_WRAPPER_HOME}/libinterceptor-haswell.so \
     ) \
-    && ${SONAR_BUILD_WRAPPER} --out-dir ./tmp echo \
-    && rm -rf tmp
+    && ${SONAR_BUILD_WRAPPER} --out-dir /tmp echo \
+    && rm -rf /tmp/*
 
 
 # Original: https://github.com/SonarSource/sonar-scanner-cli-docker
@@ -140,6 +136,7 @@ RUN wget -q -O ${SONAR_SCANNER_PACKAGE} ${SONAR_SCANNER_DOWNLOAD} \
 
 RUN npm install -g typescript@3.6.3 \
     && node -e "require('typescript')"
+
 
 USER scanner-cli
 RUN mkdir -p ~/.sonar/cache
