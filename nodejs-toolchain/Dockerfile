@@ -16,6 +16,9 @@ RUN apt-get update \
 # Install prerequisites
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
+            gcc \
+            g++ \
+            make \
             apt-utils \
             rsync \
     && apt-get clean \
