@@ -25,7 +25,7 @@ RUN yum install -y \
 # Original license: MIT License
 # Install Gradle
 ARG GRADLE_HOME=/opt/gradle
-ARG GRADLE_VERSION=6.2.2
+ARG GRADLE_VERSION=6.3
 
 ENV GRADLE_HOME=${GRADLE_HOME} \
     GRADLE_VERSION=${GRADLE_VERSION} \
