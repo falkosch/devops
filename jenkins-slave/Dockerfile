@@ -25,7 +25,7 @@ USER root
 # Upgrade environment
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update \
-    && apt-get upgrade -y --no-install-recommends \
+    && apt-get upgrade -f -y --no-install-recommends \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
